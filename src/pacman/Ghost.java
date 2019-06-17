@@ -14,7 +14,7 @@ public abstract class Ghost extends Character {
     /**
      * Trasa do przejścia
      */
-    protected Path ghostPath;
+    private Path ghostPath;
     /**
      * Czy poza domem
      */
@@ -71,12 +71,12 @@ public abstract class Ghost extends Character {
         boolean teleport = false;
         if (!paused.get()) {
             if (steps == 0) {
-                if(!frightned) {
+//                if(!frightned) {
                     synchronized (maze.getPacMan()) {
                         dotsEaten = maze.getPacMan().dotsEaten;
                         //    System.out.println(dotsEaten);
                     }
-                }
+//                }
                 if ((double) dotsEaten / (double) dotsCount >= dotsRatio) {
                     free = true;
                 }
@@ -217,16 +217,16 @@ public abstract class Ghost extends Character {
         chase = false;
         scatter = false;
         free = false;
-        Platform.runLater(()->
+        /*Platform.runLater(()->
                 imageCircle.setFill(GameData.getGhostColor()[nr]));
         Platform.runLater(()->
                 imageCircle.setStrokeWidth(0));
-    }
+*/    }
 
     /**
      * Poruszanie podczas pobytu w domu na środku maze
      */
-    public void moveInHome() {
+    private void moveInHome() {
         if (y == 13 && x < 16) {
             setDirection(x + 1, y);
         } else if (x == 16 && y < 15) {
@@ -240,9 +240,9 @@ public abstract class Ghost extends Character {
     /**
      * Opuść dom na najbliższą kratkę za bramą
      */
-    public void moveOutOfHome(){
+    private void moveOutOfHome(){
         if(x==15 && y==11){
-            chase=true;
+           scatter = true;
         }
         else if((x==13 || x==14) &&(y==12 || y==13)){
             directionX=0;
