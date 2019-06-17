@@ -52,8 +52,10 @@ public class PacMan extends Character {
             if (steps == 0) {
 
                 synchronized (this) {
-                    directionY = dirTemp[1];
-                    directionX = dirTemp[0];
+                    if(validateDirection(dirTemp[0], dirTemp[1])) {
+                        directionY = dirTemp[1];
+                        directionX = dirTemp[0];
+                    }
                 }
 
                 if (isDotCollision())
@@ -145,10 +147,10 @@ public class PacMan extends Character {
                 dirTemp[1] = 1;
                 break;
         }
-        if (!validateDirection(dirTemp[0], dirTemp[1])) {
+       /* if (!validateDirection(dirTemp[0], dirTemp[1])) {
             dirTemp[0] = directionX;
             dirTemp[1] = directionY;
-        }
+        }*/
     }
 
     /**
