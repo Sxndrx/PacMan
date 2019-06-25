@@ -3,14 +3,18 @@
  */
 package pacman;
 
+import dataBase.DBAccess;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import menuUI.EndGameMes;
+import menuUI.Menu;
+import menuUI.SceneController;
 
 public class Main extends Application {
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Pac-Man by Patrycja Uhl //June 2019");
@@ -19,17 +23,35 @@ public class Main extends Application {
         primaryStage.setResizable(false);
 
         System.out.println("Main Thred: " + Thread.currentThread().getId());
+        final EndGameMes endGameMes = new EndGameMes();
+        final Scene endScene  = new Scene(endGameMes);
+        endScene.setFill(Color.web("#b9d8e1"));
+
         final Group root = new Group();
-        final Scene scene = new Scene(root);
-        Maze maze = new Maze(root);
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, KeyEvent->maze.handleKeyboard(KeyEvent.getCode()));
-        primaryStage.setScene(scene);
+        final Scene mazeScene = new Scene(root);
+        Maze maze = new Maze(root, endGameMes);
+        mazeScene.addEventHandler(KeyEvent.KEY_PRESSED, KeyEvent->maze.handleKeyboard(KeyEvent.getCode()));
+
+        final Menu menu = new Menu(mazeScene, primaryStage, maze, new DBAccess());
+        Scene menuScene = new Scene(menu);
+        menuScene.setFill(Color.web("#b9d8e1"));
+
+
+        SceneController sceneController = new SceneController(primaryStage, mazeScene, menuScene, endScene);
+        menu.setSceneController(sceneController);
+        maze.setSceneController(sceneController);
+        endGameMes.setSceneController(sceneController);
+        primaryStage.setScene(menuScene);
+        primaryStage.centerOnScreen();
         primaryStage.show();
 
     }
 
 
     public static void main(String[] args) {
+       // DBAccess db = new DBAccess();
+       // db.readDataBase();
         launch(args);
     }
+
 }
