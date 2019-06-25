@@ -1,6 +1,5 @@
 package pacman;
 
-import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -9,6 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
+import menuUI.EndGameMes;
+import menuUI.SceneController;
+import pacman.characters.*;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,8 +39,9 @@ public class Maze{
      */
     private ScoreBoard scoreBoard;
     private volatile int[][] imageCoordinates;
-    private Thread charThreads[];
-
+    private Thread[] charThreads;
+    private SceneController sceneController;
+    private EndGameMes endGameMes;
     /**
      * Komunikat wyświetlany gdy gra jest wstrzymana
      */
@@ -48,8 +51,9 @@ public class Maze{
      */
     private Label endMessage;
 
-    public Maze(Group root) throws FileNotFoundException {
+    public Maze(Group root, EndGameMes endGameMes) throws FileNotFoundException {
         this.root = root;
+        this.endGameMes = endGameMes;
         initialize();
     }
 
@@ -120,10 +124,11 @@ public class Maze{
      * Wystartuj wątki
      */
     public void startGame(){
-
         for (Thread thread:charThreads){
-            Platform.runLater(()->thread.start());
+            thread.start();
         }
+   /* charThreads[0].start();
+    charThreads[4].start();*/
     }
 
     /**
@@ -153,13 +158,24 @@ public class Maze{
             pacMan.setDirection(dir);
         }
         if(keyCode.toString()=="P"){
-            paused.set(!paused.get());
-            if(paused.get())
-                pauseLabel.setVisible(true);
-            else
+            if(paused.get()) {
+                setPaused(false);
                 pauseLabel.setVisible(false);
+            } else {
+                pauseLabel.setVisible(true);
+                setPaused(true);
+            }
             if(endMessage.isVisible())
                 endMessage.setVisible(false);
+        }
+        if(keyCode.toString()=="W"){
+            winGame();
+        }
+        if(keyCode.toString()=="L"){
+            looseGame();
+        }
+        if(keyCode.toString()=="ESCAPE"){
+            looseGame();
         }
     }
 
@@ -167,18 +183,21 @@ public class Maze{
      * Update maze po straconym życiu przez pacmana
      */
     public void looseLife(){
-        paused.set(true);
+        setPaused(true);
         scoreBoard.hideLife();
         if(scoreBoard.lifesProperty().get()==0){
             looseGame();
         }
         else{
-            blinky.moveAtStart();
-            pacMan.moveAtStart();
-            clyde.moveAtStart();
-            pinky.moveAtStart();
-            inky.moveAtStart();
-            pauseLabel.setVisible(true);
+           /* blinky.lostLife();
+            clyde.lostLife();
+            pinky.lostLife();
+            inky.lostLife();*/
+           blinky.reset();
+           clyde.reset();
+           pinky.reset();
+           inky.reset();
+//            pauseLabel.setVisible(true);
         }
 
     }
@@ -187,15 +206,8 @@ public class Maze{
      * Update maze po przegranej grze
      */
     private void looseGame() {
-        endMessage.setText("SORRY \nYOU LOST\n\nYOU GOT:\n "+ scoreBoard.pointsProperty().get() +" POINTS\n\n PRESS \"P\" \nTO CONTINUE");
-        endMessage.setTextFill(Color.DARKBLUE);
-        endMessage.setPrefSize(360, 500);
-        endMessage.setTextAlignment(TextAlignment.CENTER);
-
-        endMessage.setStyle("-fx-background-color: BLACK; -fx-font-size: 50px");
-        endMessage.setLayoutY(80);
-        endMessage.setLayoutX(120);
-        endMessage.setVisible(true);
+        endGameMes.setMessage(false, scoreBoard.getPoints());
+        sceneController.displayEnd();
         resetGame();
     }
 
@@ -203,42 +215,41 @@ public class Maze{
      * Przywrócenie stanu początkowego maze
      */
     public void resetGame(){
-        paused.set(true);
+
+        setPaused(true);
         scoreBoard.resetLifes();
         pacMan.reset();
         blinky.reset();
         clyde.reset();
         inky.reset();
+        pinky.reset();
         for(Map.Entry<Tile, Dot> dot: dots.entrySet())
             dot.getValue().setVisible(true);
+        //notifyAll();
     }
 
     /**
      * update maze po wygranej grze
      */
     public void winGame(){
-        endMessage.setText("CONGRATULATIONS \nYOU WON!!\n\nYOU GOT: \n"+ scoreBoard.pointsProperty().get() +" POINTS\n\n PRESS \"P\" \nTO CONTINUE");
-        endMessage.setStyle(" -fx-text-fill: DARKMAGENTA");
+
+        endGameMes.setMessage(true, scoreBoard.getPoints());
+        sceneController.displayEnd();
+
         resetGame();
-        endMessage.setPrefSize(360, 500);
-        endMessage.setTextAlignment(TextAlignment.CENTER);
-        endMessage.setStyle("-fx-background-color: BLACK; -fx-font-size: 50px");
-        endMessage.setLayoutY(80);
-        endMessage.setLayoutX(120);
-        endMessage.setVisible(true);
     }
 
     /**
      * ustaw tryb frightend wszstkim postaciom (Character)
      */
     public void setFrightendGameMode(){
-        paused.set(true);
-        pacMan.setFrightned();
-        blinky.setFrightned();
-        clyde.setFrightned();
-        inky.setFrightned();
-        pinky.setFrightned();
-        paused.set(false);
+        setPaused(true);
+        blinky.setFrightendMode();
+        clyde.setFrightendMode();
+        inky.setFrightendMode();
+        pinky.setFrightendMode();
+        pacMan.setFrightendMode();
+        setPaused(false);
     }
 
     /**
@@ -278,9 +289,11 @@ public class Maze{
         return paused;
     }
 
-    public void setPaused(boolean paused) {
+    public synchronized void setPaused(boolean paused) {
         this.paused.set(paused);
     }
+
+    public synchronized boolean getPaused(){ return this.paused.get();}
 
     public Map<Tile, Dot> getDots() {
         return dots;
@@ -298,4 +311,8 @@ public class Maze{
         this.scoreBoard = scoreBoard;
     }
 
+    public void setSceneController(SceneController sceneController){
+        this.sceneController = sceneController;
+    }
 }
+
