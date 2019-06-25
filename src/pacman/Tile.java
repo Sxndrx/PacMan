@@ -24,10 +24,7 @@ public class Tile{
 
     @Override
     public boolean equals(Object obj) {
-        if(this.x == ((Tile)obj).x && this.y == ((Tile)obj).y){
-            return true;
-        }
-        else return false;
+        return this.x == ((Tile) obj).x && this.y == ((Tile) obj).y;
     }
 
     @Override
@@ -43,11 +40,11 @@ public class Tile{
         this.type = type;
     }
 
-    protected int getX() {
+    public int getX() {
         return x;
     }
 
-    protected int getY() {
+    public int getY() {
         return y;
     }
 
