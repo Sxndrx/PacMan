@@ -45,7 +45,7 @@ public class GameData {
     /**
      * Tablica Tile (kretek) budujących Maze
      */
-    private Tile mazeGrid[][];
+    private Tile[][] mazeGrid;
     private static final int inkyNR = 3;
     private static final int clydeNR = 1;
     private static final int pinkyNR = 2;
@@ -54,13 +54,14 @@ public class GameData {
     /**
      * Poziom trudnosci
      */
-    private double difficulty = 0.2;
+    private static final int maxSpeed = 20;
+    private static double difficulty = 0.2;
 
     private static final Color[] ghostColor = new Color[]{Color.web("#cc0000"), Color.web("#ff6714"), Color.web("#f763b2"), Color.web("#00ced1"), Color.web("#ffd700")};
     /**
      * dotRatio - stosunek zjedzonych kropek (Dot) do wszystkich kropek
      */
-    private static final double[] dotsRatios = new double[]{0, 0.3, 0, 0.1};
+    private static final double[] dotsRatios = new double[]{0, 0.1, 0, 0.1}; //changed ratio
 
 
     /**
@@ -79,10 +80,14 @@ public class GameData {
 
     }
 
-    public void setDifficulty(double difficulty) {
-        this.difficulty = difficulty;
-        ghostSpeed *= difficulty;
-        ghostFrightendSped *= difficulty;
+    public static void setDifficulty(double diff) {
+        difficulty = diff;
+        ghostSpeed = (int) ( (double) maxSpeed * difficulty);
+        ghostFrightendSped = (int) ((double) (maxSpeed/2 )* difficulty);
+        System.out.println(ghostSpeed);
+        if(ghostFrightendSped==3){
+            ghostFrightendSped=2;
+        }
     }
 
     /**
@@ -128,10 +133,7 @@ public class GameData {
         if (x < 0 || x >= getxTiles() || y < 0 || y >= getyTiles())
             return true;
         int type = mazeGrid[x][y].getType();
-        if (type == 6)
-            return true;
-        else
-            return false;
+        return type == 6;
     }
 
 
