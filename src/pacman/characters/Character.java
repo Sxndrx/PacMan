@@ -1,4 +1,4 @@
-package pacman;
+package pacman.characters;
 
 
 import javafx.animation.AnimationTimer;
@@ -8,6 +8,10 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import pacman.GameData;
+import pacman.Maze;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * klasa Character implementuje interfejs Runnable.
@@ -93,23 +97,31 @@ public abstract class Character implements Runnable {
     protected volatile int[][] imageCoordinates;
     protected int nr;
     protected int dotsCount;
-    protected int dotsEaten;
 
     /**
      * Ghost sciga PacMana
      */
-    protected boolean chase;
+    protected AtomicBoolean chase;
+    /** PacMan może zjeść Ghost*/
+    protected AtomicBoolean frightned;
+    /** Ghost porusza się do wyznaczonego punktu*/
+    protected AtomicBoolean scatter;
+
+
     /**
-     * PacMan może zjeść Ghost
+     * Czas od ostatniego przemieszczenia
      */
-    protected boolean frightned;
+    protected long lastUpdate;
     /**
-     * Ghost porusza się do wyznaczonego punktu
+     * Liczba pulsow od zmiany trybu chase<->scatter
      */
-    protected boolean scatter;
+    protected int sinceModeChange;
+    /**
+     * Liczba pulsow od wlaczenia trybu frightend
+     */
+    protected int sinceFrightendOn;
 
     public Character(Maze maze, Group group, int[][] gCodnt, int nr) {
-        frightned = false;
         this.maze = maze;
         this.root = group;
         paused = new SimpleBooleanProperty();
@@ -117,11 +129,12 @@ public abstract class Character implements Runnable {
         this.imageCoordinates = gCodnt;
         color = GameData.getGhostColor()[nr];
         imageCircle = new Circle(radius, color);
-
         root.getChildren().add(imageCircle);
         this.nr = nr;
         dotsCount = maze.getDots().size();
-        dotsEaten = 0;
+        scatter = new AtomicBoolean();
+        frightned = new AtomicBoolean();
+        chase = new AtomicBoolean();
         createTimer();
     }
 
@@ -133,87 +146,55 @@ public abstract class Character implements Runnable {
     /**
      * Przenosi na pozycję startową
      */
-    public void moveAtStart() {
-        this.x = startX;
-        this.y = startY;
-        steps = 0;
+    public  void moveAtStart() {
+        synchronized (this){
+
+            this.x = startX;
+            this.y = startY;
+            steps = 0;
+        }
         synchronized (maze) {
-            Platform.runLater(() -> imageY.set(maze.getGameData().calcYPos(y) + 10));
-            Platform.runLater(() -> imageX.set(maze.getGameData().calcXPos(x) + 10));
+            Platform.runLater(() ->{
+                imageY.set(maze.getGameData().calcYPos(y) + 10);
+                imageX.set(maze.getGameData().calcXPos(x) + 10);
+            } );
             imageCoordinates[nr][0] = imageX.get();
             imageCoordinates[nr][1] = imageY.get();
         }
-        startStatus();
     }
 
     /**
      * resetuje stan Character, wymagana zaimplementowania
      */
-    protected abstract void reset();
+    /*public synchronized void reset(){
+        moveAtStart();
+        startStatus();
+        lastUpdate=0;
+        sinceFrightendOn=0;
+        sinceModeChange=0;
+
+        imageCircle.setFill(color);
+    }*/
 
     /**
      * ustawia status początkowy Character
      */
     protected abstract void startStatus();
-
-    /**
+/*
+    *//**
      * zmienia tryb na frightend
-     */
+     *//*
     protected abstract void setFrightned();
 
-    /**
-     * Powrót do trybu Chase
-     */
-    protected abstract void setNormal();
+    *//**
+     * Powrót do trybu Chase*/
+
+   // protected abstract void setNormal();
 
     /**
      * Utworzenie nowego timera
      */
-    protected void createTimer() {
-        timer = new AnimationTimer() {
-            /**
-             * Czas od ostatniego przemieszczenia
-             */
-            private long lastUpdate = 0;
-            /**
-             * Liczba pulsow od zmiany trybu chase<->scatter
-             */
-            private int sinceModeChange = 0;
-            /**
-             * Liczba pulsow od wlaczenia trybu frightend
-             */
-            private int sinceFrightendOn = 0;
-
-            /**
-             * Najpierw sprawdzenie czy zmiana trybu i zmiana,
-             * co 45ms porusz o krok
-             */
-            @Override
-            public void handle(long l) {
-                if (scatter && sinceModeChange == 110) {
-                    sinceModeChange = 0;
-                    scatter = false;
-                    chase = true;
-                } else if (chase && sinceModeChange == 220) {
-                    sinceModeChange = 0;
-                    scatter = true;
-                    chase = false;
-                } else if (frightned && sinceFrightendOn == 176) {
-                    Platform.runLater(() -> setNormal());
-                    sinceFrightendOn = 0;
-                }
-                if (l - lastUpdate >= 45000000) {
-                    moveOneStep();
-                    lastUpdate = l;
-                    if (frightned) {
-                        sinceFrightendOn++;
-                    } else {
-                        sinceModeChange++;
-                    }
-                }
-            }
-        };
-    }
+    protected abstract void createTimer();
 
     /**
      * @return nr Ghost z którym nastąpiła kolizja, -1 jeśli kolizja nie nastąpiła
@@ -247,10 +228,7 @@ public abstract class Character implements Runnable {
      * @return false - nie da się przejść w tym kierunku, true - poprawny kierunek
      */
     public boolean validateDirection(int dirX, int dirY) {
-        if (maze.getGameData().isWall(x + dirX, y + dirY))
-            return false;
-        else
-            return true;
+        return !maze.getGameData().isWall(x + dirX, y + dirY);
     }
 
     /**
@@ -270,7 +248,6 @@ public abstract class Character implements Runnable {
 
     protected void moveImageVertically() {
         synchronized (maze) {
-
             imageY.set(imageY.get() + directionY * speed);
         }
     }
@@ -281,19 +258,23 @@ public abstract class Character implements Runnable {
      * update współdzielonej tablicy współrzędnych
      */
     protected void moveImage(boolean teleport) {
-        steps = ((steps + 1) % fullSteps);
-        if (teleport) {
-            Platform.runLater(() -> doTeleport());
-            steps = 0;
-        } else if (directionX != 0) {
-            Platform.runLater(() -> moveImageHorizontally());
-        } else {
-            Platform.runLater(() -> moveImageVertically());
-        }
+        try {
+            steps = ((steps + 1) % fullSteps);
+            if (teleport) {
+                Platform.runLater(() -> doTeleport());
+                steps = 0;
+            } else if (directionX != 0) {
+                Platform.runLater(() -> moveImageHorizontally());
+            } else {
+                Platform.runLater(() -> moveImageVertically());
+            }
 
-        synchronized (maze) {
-            imageCoordinates[nr][0] = imageX.get();
-            imageCoordinates[nr][1] = imageY.get();
+            synchronized (maze) {
+                imageCoordinates[nr][0] = imageX.get();
+                imageCoordinates[nr][1] = imageY.get();
+            }
+        }catch (ArithmeticException e){
+            steps=0;
         }
     }
 
@@ -315,4 +296,7 @@ public abstract class Character implements Runnable {
     public void run() {
         timer.start();
     }
+
+    protected abstract void setFrightendMode();
+    protected abstract void setChaseMode();
 }
