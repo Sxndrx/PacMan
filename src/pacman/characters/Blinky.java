@@ -1,6 +1,7 @@
-package pacman;
+package pacman.characters;
 
 import javafx.scene.Group;
+import pacman.Maze;
 
 /**
  * Czerwony Ghost
@@ -13,16 +14,6 @@ public class Blinky extends Ghost {
         scatterX = 26;
         scatterY = 1;
         reset();
-    }
-
-    @Override
-    protected void startStatus() {
-        moving = true;
-        free = false;
-        chase = false;
-        scatter = frightned = false;
-        prevX=x;
-        prevY=y;
     }
 
     /**

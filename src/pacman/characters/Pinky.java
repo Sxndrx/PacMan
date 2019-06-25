@@ -1,6 +1,7 @@
-package pacman;
+package pacman.characters;
 
 import javafx.scene.Group;
+import pacman.Maze;
 
 /**
  * Różowy Ghost
@@ -36,7 +37,7 @@ public class Pinky extends Ghost {
         }
 
     }
-
+/*
     @Override
     protected void startStatus() {
         free=false;
@@ -45,5 +46,5 @@ public class Pinky extends Ghost {
         scatter = frightned = false;
         prevX=x;
         prevY=y;
-    }
+    }*/
 }

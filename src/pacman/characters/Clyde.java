@@ -1,6 +1,7 @@
-package pacman;
+package pacman.characters;
 
 import javafx.scene.Group;
+import pacman.Maze;
 
 /**
  * Pomaranczowy Ghost
@@ -15,7 +16,7 @@ public class Clyde extends Ghost {
         scatterY=29;
    }
 
-    @Override
+    /*@Override
     protected void startStatus() {
         free=false;
         chase=false;
@@ -24,7 +25,7 @@ public class Clyde extends Ghost {
         prevX=x;
         prevY=y;
     }
-
+*/
     /**
      * Scigaj bezpośrednio PacMana, jeśli liczba kratek od PacMana jest mniejsza niż 8 idź do punktu scatterX, scatterY
      */

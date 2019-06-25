@@ -1,6 +1,8 @@
-package pacman;
+package pacman.characters;
 
 import javafx.scene.Group;
+import pacman.GameData;
+import pacman.Maze;
 
 /**
  * Niebieski Ghost
@@ -37,7 +39,7 @@ public class Inky extends Ghost {
 
         }
     }
-
+/*
     @Override
     protected void startStatus() {
         free=false;
@@ -46,5 +48,5 @@ public class Inky extends Ghost {
         scatter = frightned = false;
         prevX=x;
         prevY=y;
-    }
+    }*/
 }
