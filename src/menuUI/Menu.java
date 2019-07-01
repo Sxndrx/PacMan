@@ -37,7 +37,6 @@ public class Menu extends Group {
     AnchorPane anchorPane;
     String show = "TOP TEN";
     String hide = "HIDE RESULTS";
-//    private HBox table;
 
     public Menu(Scene scene, Stage stage, Maze maze, DBAccess dbAccess) {
 
@@ -88,9 +87,7 @@ public class Menu extends Group {
         flowPane.setAlignment(Pos.CENTER);
         flowPane.setVgap(10);
         flowPane.setPrefWidth(stage.getWidth());
-        // flowPane.setPadding(new Insets(0, 200, 0, 200));
         table = new GridPane();
-//        table = new HBox();
         table.setGridLinesVisible(true);
         table.setPadding(new Insets(20, 20, 20, 20));
         table.setVisible(false);
@@ -130,45 +127,24 @@ public class Menu extends Group {
 
 
     private void buildTableView(ArrayList<String[]> records) {
-        /*String n, p, d;
-        n = "NAME\n";
-        p = "POINTS\n";
-        d = "DATE\n";*/
         table.getChildren().removeAll();
 
         name = new Label("NAME\n");
         points = new Label("POINTS\n");
         date = new Label("DATE\n");
         for(String[] record : records){
-        //    System.out.println(record[0]);
             name.setText(name.getText().concat(record[0] + "\n"));
             points.setText(points.getText().concat(record[1] + "\n"));
             date.setText(date.getText().concat(record[2] + "\n"));
         }
 
-   //     System.out.println(name.getText());;
 
         name.setMinWidth(stage.getWidth()/3-60);
         name.setVisible(true);
-//        name.setLayoutY(300);
-//        name.setLayoutX(stage.getMaxWidth()-90);
         points.setMinWidth(stage.getWidth()/3-60);
         points.setVisible(true);
-//        points.setLayoutY(name.getLayoutY());
-//        points.setLayoutX(name.getLayoutX()+name.getWidth());
         date.setMinWidth(stage.getWidth()/3-60);
         date.setVisible(true);
-//        date.setLayoutY(name.getLayoutY());
-//        date.setLayoutX(points.getLayoutX()+name.getWidth());
-
-//        table.getChildren().addAll(name, points, date);
-       // table.setVgap(10);
-       // table.addColumn(1, name);
-      //  table.setColumnSpan(name, (int) name.getMinWidth());
-        //table.addColumn(2, points);
-      //  table.setColumnSpan(points, (int) points.getMinWidth());
-        //table.addColumn(3, date);
-       // table.setColumnSpan(date, (int) date.getMinWidth());
 
         GridPane.setRowIndex(name, 0);
         GridPane.setColumnIndex(name, 0);

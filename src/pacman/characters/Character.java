@@ -163,33 +163,12 @@ public abstract class Character implements Runnable {
         }
     }
 
-    /**
-     * resetuje stan Character, wymagana zaimplementowania
-     */
-    /*public synchronized void reset(){
-        moveAtStart();
-        startStatus();
-        lastUpdate=0;
-        sinceFrightendOn=0;
-        sinceModeChange=0;
-
-        imageCircle.setFill(color);
-    }*/
 
     /**
      * ustawia status początkowy Character
      */
     protected abstract void startStatus();
-/*
-    *//**
-     * zmienia tryb na frightend
-     *//*
-    protected abstract void setFrightned();
 
-    *//**
-     * Powrót do trybu Chase*/
-
-   // protected abstract void setNormal();
 
     /**
      * Utworzenie nowego timera
@@ -205,7 +184,6 @@ public abstract class Character implements Runnable {
             for (int i = 0; i < 4; i++) {
                 int ghostX = imageCoordinates[i][0];
                 int ghostY = imageCoordinates[i][1];
-                //   System.out.println("gX: "+ghostX +" gY: " +ghostY +"   x: " +imageX.get()+ " y: "+imageY.get());
                 if (Math.abs(ghostX - imageX.get()) < 2 * radius && (Math.abs(ghostY - imageY.get()) < 2 * radius) && i != nr) {
                     return i;
                 }

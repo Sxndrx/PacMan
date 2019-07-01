@@ -39,14 +39,4 @@ public class Inky extends Ghost {
 
         }
     }
-/*
-    @Override
-    protected void startStatus() {
-        free=false;
-        chase=false;
-        moving=true;
-        scatter = frightned = false;
-        prevX=x;
-        prevY=y;
-    }*/
 }

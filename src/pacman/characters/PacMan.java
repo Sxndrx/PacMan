@@ -64,15 +64,6 @@ public class PacMan extends Character {
      */
     @Override
     public void moveOneStep() {
-        /*synchronized (maze) {
-            if (maze.isPaused()) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }*/
 
         int tempX;
         int tempY;
@@ -164,10 +155,6 @@ public class PacMan extends Character {
                     break;
             }
         }
-       /* if (!validateDirection(dirTemp[0], dirTemp[1])) {
-            dirTemp[0] = directionX;
-            dirTemp[1] = directionY;
-        }*/
     }
 
     @Override
@@ -195,18 +182,10 @@ public class PacMan extends Character {
             dotsEaten++;
         }
         if (d.getType() == 8) {
-           // setFrightendMode();
             maze.setFrightendGameMode();
-            /*Random random = new Random();
-            double probability = random.nextDouble();
-            if(probability>=0.5) {
-                eatGhost(random.nextInt(3));
-            }
-            System.out.println(probability);*/
         }
         if (dotsEaten == dotsCount)
             maze.winGame();
-        // System.out.println(points);
     }
 
     /**
@@ -249,7 +228,6 @@ public class PacMan extends Character {
                         lastUpdate = l;
                         if (frightned.get()) {
                             sinceFrightendOn++;
-                        //    System.out.println(sinceFrightendOn);
                         } else {
                             sinceModeChange++;
                         }

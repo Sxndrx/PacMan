@@ -30,21 +30,10 @@ public class Pinky extends Ghost {
             int endX = pacX+4*maze.getPacMan().getDirectionX(); //getDirection is synchronised
             int endY = pacY+4*maze.getPacMan().getDirectionY();
 
-//            endX=endX<0?0:endX%maze.getGameData().getxTiles();
-//            endY=endY<0?0:endY%maze.getGameData().getyTiles();
             setDirection(endX, endY);
 
         }
 
     }
-/*
-    @Override
-    protected void startStatus() {
-        free=false;
-        chase=false;
-        moving=true;
-        scatter = frightned = false;
-        prevX=x;
-        prevY=y;
-    }*/
+
 }

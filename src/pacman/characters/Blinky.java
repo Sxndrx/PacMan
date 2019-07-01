@@ -28,8 +28,6 @@ public class Blinky extends Ghost {
 
             }
             setDirection(pacX, pacY);
-         //   System.out.println("x: " + imageCoordinates[4][0]+"y: " + imageCoordinates[4][1]);
-         //   System.out.println("x: " + x+"y: " + y);
         }
     }
 

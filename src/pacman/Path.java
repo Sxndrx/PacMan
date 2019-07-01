@@ -4,7 +4,10 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Sciezka dla Ghost
@@ -55,7 +58,6 @@ public class Path {
                 buildPath(current);
                 open.clear();
                 path.remove(start);
-             //   return;
             } else {
                 addNeighbours(current, neighbours);
 
@@ -101,7 +103,6 @@ public class Path {
                         buildPath(current);
                         path.remove(start);
                         open.clear();
-                  //      return;
                     }
                     else close.add(successor);
                 }
@@ -124,7 +125,6 @@ public class Path {
             }
             buildPath(open.get(0));
         }
-   //     System.out.println(path.toString());
 
     }
 
@@ -138,7 +138,6 @@ public class Path {
             while (current.getParent() != null) {
                 this.path.add(current);
                 current = current.getParent();
-             //   System.out.println(current.toString());
             }
             this.path.add(current);
         }
@@ -175,24 +174,19 @@ public class Path {
         tempX -= 1;
         if (tempX < 0 && tempY == 14)
             tempX = maze.getGameData().getxTiles() - 1;
-       // if (!maze.getGameData().isWall(tempX, tempY))
             neighbours.add(new Node(tempX, tempY));
 
         tempX = current.getX() + 1;
         if (tempX == maze.getGameData().getxTiles() && tempY == 14) {
             tempX = 0;
         }
-        //if (!maze.getGameData().isWall(tempX, tempY))
             neighbours.add(new Node(tempX, tempY));
 
         tempX = current.getX();
         tempY = current.getY() - 1;
-        //if (!maze.getGameData().isWall(tempX, tempY))
             neighbours.add(new Node(tempX, tempY));
 
         tempY = current.getY()+1;
-        //if (!maze.getGameData().isWall(tempX, tempY))
-       // tempY += 2;
             neighbours.add(new Node(tempX, tempY));
     }
 
@@ -218,8 +212,5 @@ public class Path {
         this.path.remove(0);
         return temp;
     }
-
-
-    // public getFirstX
 
 }

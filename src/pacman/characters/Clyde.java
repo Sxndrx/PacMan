@@ -16,16 +16,6 @@ public class Clyde extends Ghost {
         scatterY=29;
    }
 
-    /*@Override
-    protected void startStatus() {
-        free=false;
-        chase=false;
-        moving=true;
-        scatter = frightned = false;
-        prevX=x;
-        prevY=y;
-    }
-*/
     /**
      * Scigaj bezpośrednio PacMana, jeśli liczba kratek od PacMana jest mniejsza niż 8 idź do punktu scatterX, scatterY
      */

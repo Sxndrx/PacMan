@@ -127,8 +127,6 @@ public class Maze{
         for (Thread thread:charThreads){
             thread.start();
         }
-   /* charThreads[0].start();
-    charThreads[4].start();*/
     }
 
     /**
@@ -189,15 +187,10 @@ public class Maze{
             looseGame();
         }
         else{
-           /* blinky.lostLife();
-            clyde.lostLife();
-            pinky.lostLife();
-            inky.lostLife();*/
            blinky.reset();
            clyde.reset();
            pinky.reset();
            inky.reset();
-//            pauseLabel.setVisible(true);
         }
 
     }
@@ -225,7 +218,6 @@ public class Maze{
         pinky.reset();
         for(Map.Entry<Tile, Dot> dot: dots.entrySet())
             dot.getValue().setVisible(true);
-        //notifyAll();
     }
 
     /**

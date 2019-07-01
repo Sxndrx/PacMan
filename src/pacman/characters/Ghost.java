@@ -82,7 +82,6 @@ public abstract class Ghost extends Character {
     protected synchronized void moveOneStep() {
         boolean teleport = false;
         synchronized (maze) {
-            //boolean p = maze.isPaused();
             if (maze.isPaused()) {
                 try {
                     this.wait();
@@ -95,31 +94,24 @@ public abstract class Ghost extends Character {
         if (steps == 0 && fullSteps!=0) {
             if (inHome.get() && !freeToGo.get()) {
                 moveInHome();
-               // System.out.println("in home");
                 moving = true;
                 synchronized (maze.getPacMan()) {
                     if ((double) maze.getPacMan().dotsEaten / (double) dotsCount >= dotsRatio) {
                         freeToGo.set(true);
                     }
-              //      System.out.println(getClass() + "  here +   "  + (double) maze.getPacMan().dotsEaten / (double) dotsCount);
-                    //    System.out.println(dotsEaten);
                 }
             } else {
                 if(inHome.get() && freeToGo.get()){
                     moveOutOfHome();
-                //    System.out.println("out home");
                 }
                 else if (frightned.get()) {
                     setDirection(15, 11);
-                 //   System.out.println("frightend");
                 }
                 else if (scatter.get()) {
                     setDirection(scatterX, scatterY);
                     moving = true;
-               //     System.out.println("scatter");
                 } else if (chase.get()) {
                     moveChase();
-                //    System.out.println("chase");
                     moving = true;
                 }
             }
@@ -157,7 +149,6 @@ public abstract class Ghost extends Character {
         }
 
         if (moving) {
-            //   System.out.println(this.getClass() + " x: " +speed*directionX + " y: " + speed*directionY);
             moveImage(teleport);
         }
     }
@@ -198,7 +189,6 @@ public abstract class Ghost extends Character {
     }
 
 
-    //@Override
     public void reset() {
         moveAtStart();
         setInHomeMode();
@@ -221,21 +211,6 @@ public abstract class Ghost extends Character {
         setInHomeMode();
     }
 
-   /* @Override
-    protected void setFrightned() {
-        frightned = true;
-        chase = false;
-        scatter = false;
-        //if(free){
-        Platform.runLater(() ->
-                imageCircle.setStroke(Color.DARKBLUE*//*CADETBLUE*//*));
-        Platform.runLater(() ->
-                imageCircle.setStrokeWidth(3));
-        //Platform.runLater(()->
-        //        imageCircle.setFill(Color.DARKBLUE));
-
-        // }
-    }*/
 
     protected void setNormalColor() {
         Platform.runLater(() -> {
@@ -282,7 +257,6 @@ public abstract class Ghost extends Character {
         } else if ((x == 13 || x == 14) && (y == 14 || y == 13)) {
             directionX = 0;
             directionY = -1;
-            //     System.out.println("here");
         } else {
             setDirection(14, 11);
         }
@@ -372,7 +346,6 @@ public abstract class Ghost extends Character {
                     }
                     if (l - lastUpdate >= 45000000) {
                         moveOneStep();
-                      //  System.out.println(sinceFrightendOn + "//"+ sinceModeChange +"//" );
                         lastUpdate = l;
                         if (frightned.get()) {
                             sinceFrightendOn++;

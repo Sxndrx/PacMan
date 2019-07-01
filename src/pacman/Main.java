@@ -49,8 +49,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-       // DBAccess db = new DBAccess();
-       // db.readDataBase();
         launch(args);
     }
 
