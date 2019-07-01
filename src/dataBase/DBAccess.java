@@ -12,6 +12,9 @@ public class DBAccess {
     public void open() throws ClassNotFoundException, SQLException {
 
             Class.forName("com.mysql.jdbc.Driver");
+            //user = root,
+            //password = Admin123$
+            // change is required
             connection = DriverManager.getConnection("jdbc:mysql://localhost/pacMan?"+"user=root&password=Admin123$");
 
     }
