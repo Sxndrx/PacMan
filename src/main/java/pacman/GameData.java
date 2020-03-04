@@ -37,11 +37,11 @@ public class GameData {
      * Offset od dolnje krawędzi
      */
     private final int yOffsetBottom = 2;
-    private final String mazePic = "src/images/maze.png";
+    private final String mazePic = "/maze.png";
     /**
      * Sciezka do pliku txt reprezentującego typu kratek
      */
-    private final String mazeOne = "src/images/mazelv1.txt";
+    private final String mazeOne = "/mazelv1.txt";
     /**
      * Tablica Tile (kretek) budujących Maze
      */
@@ -94,10 +94,9 @@ public class GameData {
      * Pobiera dane z pliku mazeOne.txt i buduje mazeGrid[][]
      */
     public void collectTileData() {
-        File file = new File(mazeOne);
         InputStream in = null;
         try {
-            in = new FileInputStream(file);
+            in = getClass().getResourceAsStream(mazeOne);
             Reader reader = new InputStreamReader(in);
             Reader buffer = new BufferedReader(reader);
             int r;

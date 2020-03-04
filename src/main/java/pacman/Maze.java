@@ -59,7 +59,7 @@ public class Maze{
 
     private void initialize() throws FileNotFoundException {
         gameData = new GameData();
-        Image maze = new Image(new FileInputStream(gameData.getMazePic()));
+        Image maze = new Image(getClass().getResourceAsStream(gameData.getMazePic()));
         mazeImage = new ImageView(maze);
         this.root.getChildren().add(mazeImage);
         paused = new SimpleBooleanProperty(true);
