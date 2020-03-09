@@ -4,6 +4,9 @@
 package pacman;
 
 import dataBase.DBAccess;
+import dataBase.HibernateUtil;
+import dataBase.Score;
+import dataBase.ScoreDAO;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -17,6 +20,13 @@ import menuUI.SceneController;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
+//
+        HibernateUtil.getSessionFactory().openSession();
+        for(Score score : ScoreDAO.getHighest(2)){
+            System.err.println(score.getScore() + score.getName());
+        }
+        HibernateUtil.shutdown();
+
         primaryStage.setTitle("Pac-Man by Patrycja Uhl //June 2019");
         primaryStage.setWidth(GameData.getWidth());
         primaryStage.setHeight(GameData.getHeight());

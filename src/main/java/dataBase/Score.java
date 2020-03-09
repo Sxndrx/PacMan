@@ -15,7 +15,7 @@ import java.util.Calendar;
 //        Query OK, 0 rows affected (0.07 sec)
 
 
-@Entity
+@javax.persistence.Entity
 @Table(name = "score")
 public class Score {
     @Id
