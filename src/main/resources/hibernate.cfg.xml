@@ -12,6 +12,6 @@
         <property name="show_sql">false</property>
         <property name="current_session_context_class">thread</property>
         <property name="hibernate.hbm2ddl.auto">validate</property>
-        <mapping class="dataBase.Score"/>
+        <mapping class="game.dataBase.Score"/>
     </session-factory>
 </hibernate-configuration>
