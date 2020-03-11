@@ -8,6 +8,7 @@ import java.util.Calendar;
 @Table(name = "score")
 public class Score {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 

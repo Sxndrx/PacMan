@@ -3,7 +3,6 @@
  */
 package game.pacman;
 
-import game.dataBase.DBAccess;
 import game.dataBase.HibernateUtil;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -37,7 +36,7 @@ public class Main extends Application {
         Maze maze = new Maze(root, endGameMes);
         mazeScene.addEventHandler(KeyEvent.KEY_PRESSED, KeyEvent->maze.handleKeyboard(KeyEvent.getCode()));
 
-        final Menu menu = new Menu(mazeScene, primaryStage, maze, new DBAccess());
+        final Menu menu = new Menu(mazeScene, primaryStage, maze);
         Scene menuScene = new Scene(menu);
         menuScene.setFill(Color.web("#b9d8e1"));
 

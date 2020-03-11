@@ -1,7 +1,6 @@
 package game.menuViews;
 
 import game.Utils;
-import game.dataBase.DBAccess;
 import game.dataBase.Score;
 import game.dataBase.ScoreDAO;
 import javafx.geometry.Insets;
@@ -31,7 +30,6 @@ public class Menu extends Group {
     private Scene scene;
     private Stage stage;
     private Maze maze;
-    private DBAccess dbAccess;
     private FlowPane flowPane;
     private Label name;
     private Label points;
@@ -41,11 +39,10 @@ public class Menu extends Group {
     String show = "TOP TEN";
     String hide = "HIDE RESULTS";
 
-    public Menu(Scene scene, Stage stage, Maze maze, DBAccess dbAccess) {
+    public Menu(Scene scene, Stage stage, Maze maze) {
 
         this.stage = stage;
         this.maze = maze;
-        this.dbAccess = dbAccess;
 
         playButton = new Button("PLAY");
         playButton.setPrefWidth(200);
