@@ -1,6 +1,7 @@
 package pacman;
 
 import javafx.scene.paint.Color;
+import pacman.Maze.MazeTile;
 
 import java.io.*;
 
@@ -45,7 +46,7 @@ public class GameData {
     /**
      * Tablica Tile (kretek) budujących Maze
      */
-    private Tile[][] mazeGrid;
+    private MazeTile[][] mazeGrid;
     private static final int inkyNR = 3;
     private static final int clydeNR = 1;
     private static final int pinkyNR = 2;
@@ -74,7 +75,7 @@ public class GameData {
     private static int ghostFrightendSped = 10;
 
     public GameData() {
-        mazeGrid = new Tile[xTiles][yTiles];
+        mazeGrid = new MazeTile[xTiles][yTiles];
         collectTileData();
         setDifficulty(0.2);
 
@@ -106,7 +107,7 @@ public class GameData {
             while ((r = buffer.read()) != -1) {
                 if (r >= 48 && r < 57) {
                     type = r - 48;
-                    mazeGrid[tileX][tileY] = new Tile(tileX, tileY, type);
+                    mazeGrid[tileX][tileY] = new MazeTile(tileX, tileY, type);
                     tileX = (++tileX) % xTiles;
                     if (tileX == 0)
                         tileY = (++tileY) % yTiles;
@@ -194,7 +195,7 @@ public class GameData {
     }
 
 
-    public Tile getTile(int x, int y) {
+    public MazeTile getTile(int x, int y) {
         return mazeGrid[x][y];
     }
 

@@ -1,7 +1,7 @@
-package pacman.characters;
+package pacman.characters.ghosts;
 
 import javafx.scene.Group;
-import pacman.Maze;
+import pacman.Maze.Maze;
 
 /**
  * Pomaranczowy Ghost

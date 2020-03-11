@@ -1,4 +1,4 @@
-package menuUI;
+package pacman.SceneController;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;

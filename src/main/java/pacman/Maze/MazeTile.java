@@ -1,4 +1,4 @@
-package pacman;
+package pacman.Maze;
 
 
 import java.util.Objects;
@@ -6,17 +6,17 @@ import java.util.Objects;
 /**
  * Kratka w mazeGrid
  */
-public class Tile{
+public class MazeTile {
     protected int x;
     protected int y;
     private int type;
 
 
-    public Tile(int x, int y) {
+    public MazeTile(int x, int y) {
         this(x, y, 0);
     }
 
-    public Tile(int x, int y, int type) {
+    public MazeTile(int x, int y, int type) {
         this.x = x;
         this.y = y;
         this.type = type;
@@ -24,7 +24,7 @@ public class Tile{
 
     @Override
     public boolean equals(Object obj) {
-        return this.x == ((Tile) obj).x && this.y == ((Tile) obj).y;
+        return this.x == ((MazeTile) obj).x && this.y == ((MazeTile) obj).y;
     }
 
     @Override

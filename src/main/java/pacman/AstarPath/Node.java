@@ -1,9 +1,11 @@
-package pacman;
+package pacman.AstarPath;
+
+import pacman.Maze.MazeTile;
 
 /**
  * Węzeł w ścieżce ghostPath
  */
-public class Node extends Tile {
+public class Node extends MazeTile {
     /**
      * poprzedni węzeł
      */

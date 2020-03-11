@@ -1,4 +1,4 @@
-package pacman;
+package pacman.Maze;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Group;
@@ -8,11 +8,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
-import menuUI.EndGameMes;
-import menuUI.SceneController;
+import menuViews.EndGameMes;
+import pacman.SceneController.SceneController;
+import pacman.Dot;
+import pacman.GameData;
+import pacman.ScoreBoard;
 import pacman.characters.*;
+import pacman.characters.ghosts.Blinky;
+import pacman.characters.ghosts.Clyde;
+import pacman.characters.ghosts.Inky;
+import pacman.characters.ghosts.Pinky;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +33,7 @@ public class Maze{
     /**
      * mapa Dots klucz kratka, na której znajduje się Dot (value)
      */
-    private Map<Tile, Dot> dots;
+    private Map<MazeTile, Dot> dots;
     private PacMan pacMan;
     private Blinky blinky;
     private Clyde clyde;
@@ -216,7 +222,7 @@ public class Maze{
         clyde.reset();
         inky.reset();
         pinky.reset();
-        for(Map.Entry<Tile, Dot> dot: dots.entrySet())
+        for(Map.Entry<MazeTile, Dot> dot: dots.entrySet())
             dot.getValue().setVisible(true);
     }
 
@@ -287,11 +293,11 @@ public class Maze{
 
     public synchronized boolean getPaused(){ return this.paused.get();}
 
-    public Map<Tile, Dot> getDots() {
+    public Map<MazeTile, Dot> getDots() {
         return dots;
     }
 
-    public void setDots(Map<Tile, Dot> dots) {
+    public void setDots(Map<MazeTile, Dot> dots) {
         this.dots = dots;
     }
 

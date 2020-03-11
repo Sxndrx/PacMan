@@ -1,4 +1,4 @@
-package pacman.characters;
+package pacman.characters.ghosts;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -6,9 +6,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import pacman.GameData;
-import pacman.Maze;
-import pacman.Node;
-import pacman.Path;
+import pacman.Maze.Maze;
+import pacman.AstarPath.Node;
+import pacman.AstarPath.Path;
+import pacman.characters.Character;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -96,7 +97,7 @@ public abstract class Ghost extends Character {
                 moveInHome();
                 moving = true;
                 synchronized (maze.getPacMan()) {
-                    if ((double) maze.getPacMan().dotsEaten / (double) dotsCount >= dotsRatio) {
+                    if ((double) maze.getPacMan().getDotsEaten() / (double) dotsCount >= dotsRatio) {
                         freeToGo.set(true);
                     }
                 }

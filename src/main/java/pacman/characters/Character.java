@@ -9,7 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import pacman.GameData;
-import pacman.Maze;
+import pacman.Maze.Maze;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

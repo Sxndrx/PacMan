@@ -68,4 +68,9 @@ public class Score {
     public void setPlaydate(Timestamp playdate) {
         this.playdate = playdate;
     }
+
+    @Override
+    public String toString() {
+        return name+": "+score+" "+playdate.toString();
+    }
 }

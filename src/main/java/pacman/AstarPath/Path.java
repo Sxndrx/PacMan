@@ -1,8 +1,9 @@
-package pacman;
+package pacman.AstarPath;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import pacman.Maze.Maze;
 
 import java.util.Collections;
 import java.util.Comparator;

@@ -1,4 +1,4 @@
-package menuUI;
+package menuViews;
 
 import dataBase.DBAccess;
 import javafx.geometry.Insets;

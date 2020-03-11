@@ -1,4 +1,4 @@
-package menuUI;
+package menuViews;
 
 import dataBase.DBAccess;
 import javafx.application.Platform;
@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
+import pacman.SceneController.SceneController;
 
 
 public class EndGameMes extends Group {

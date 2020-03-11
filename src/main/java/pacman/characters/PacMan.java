@@ -6,8 +6,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import pacman.Dot;
-import pacman.Maze;
-import pacman.Tile;
+import pacman.Maze.Maze;
+import pacman.Maze.MazeTile;
 
 import java.io.FileNotFoundException;
 
@@ -20,6 +20,10 @@ public class PacMan extends Character {
      * zdobyte punkty
      */
     private SimpleIntegerProperty points;
+
+    public int getDotsEaten() {
+        return dotsEaten;
+    }
 
     protected int dotsEaten;
     /**
@@ -174,7 +178,7 @@ public class PacMan extends Character {
      * Zjedzenie kropki
      */
     private void eatDot() {
-        Dot d = maze.getDots().get(new Tile(x, y));
+        Dot d = maze.getDots().get(new MazeTile(x, y));
         d.hide();
         Platform.runLater(() ->
                 points.set(points.get() + d.getPoints()));
@@ -192,8 +196,8 @@ public class PacMan extends Character {
      * @return true jesli jest kolizja z Dot, false przeciwnie
      */
     private boolean isDotCollision() {
-        if (maze.getDots().containsKey(new Tile(x, y))) {
-            return maze.getDots().get(new Tile(x, y)).isVisible();
+        if (maze.getDots().containsKey(new MazeTile(x, y))) {
+            return maze.getDots().get(new MazeTile(x, y)).isVisible();
         }
         return false;
     }

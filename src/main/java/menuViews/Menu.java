@@ -1,6 +1,8 @@
-package menuUI;
+package menuViews;
 
 import dataBase.DBAccess;
+import dataBase.Score;
+import dataBase.ScoreDAO;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -13,9 +15,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import pacman.GameData;
-import pacman.Maze;
+import pacman.Maze.Maze;
+import pacman.SceneController.SceneController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Menu extends Group {
@@ -66,8 +70,8 @@ public class Menu extends Group {
         showTenBestButton.setPrefWidth(playButton.getPrefWidth());
         showTenBestButton.setOnAction(event -> {
             if(showTenBestButton.getText().equals(show)){
-                ArrayList<String[]> list;
-                list =  dbAccess.readTenScores();
+                List<Score> list;
+                list = ScoreDAO.getHighest(10);
                 buildTableView(list);
                 table.setVisible(true);
                 showTenBestButton.setText(hide);
@@ -126,16 +130,18 @@ public class Menu extends Group {
     }
 
 
-    private void buildTableView(ArrayList<String[]> records) {
+    private void buildTableView(List<Score> records) {
         table.getChildren().removeAll();
 
         name = new Label("NAME\n");
         points = new Label("POINTS\n");
         date = new Label("DATE\n");
-        for(String[] record : records){
-            name.setText(name.getText().concat(record[0] + "\n"));
-            points.setText(points.getText().concat(record[1] + "\n"));
-            date.setText(date.getText().concat(record[2] + "\n"));
+        for(Score record : records){
+            name.setText(name.getText().concat(record.getName() + "\n"));
+            points.setText(points.getText().concat(record.getScore() + "\n"));
+            if(record.getPlaydate()!=null){
+                date.setText(date.getText().concat(record.getPlaydate().toString() + "\n"));
+            }
         }
 
 
